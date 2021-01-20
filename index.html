@@ -1,0 +1,169 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Biden Bingo</title>
+    <style>
+      body {
+        font-family: Arial;
+      }
+
+      #bingo-board-wrapper {
+        float: left;
+        margin-bottom: 50px;
+      }
+
+      #data-input-wrapper {
+        float: right;
+        width: calc(100vw - 850px);
+        min-width: 300px;
+      }
+
+      #square-list {
+        width: 300px;
+        height: 500px;
+      }
+
+      #buttons button {
+        width: 150px;
+        height: 50px;
+      }
+
+      #bingo-board {
+        font-size: 18px;
+      }
+
+      #bingo-board td {
+        vertical-align: center;
+        text-align: center;
+        border: solid black 1px;
+        width: 160px;
+        height: 160px;
+      }
+
+      #bingo-board th {
+        text-align: center;
+        vertical-align: center;
+        height: 90px;
+      }
+      
+      #bingo-board th img {
+        height: 80px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="bingo-board-wrapper">
+      <table id="bingo-board">
+
+      </table>
+    </div>
+    <div id="data-input-wrapper">
+      <p>
+        <b>How to play:</b> Biden Bingo is just like regular bingo, except each square is a piece of policy that may be passed under the Biden administration. Add whatever policy items you like and place them on the board wherever you desire. Watch the news or <a href="https://www.facebook.com/BidenBingoBoard" target="_blank">this Facebook page</a> to stay up-to-date on the latest policies passed by the administration and mark the squares on your board accordingly. Be the first to get five squares in a row, either vertically, horizontally, or diagonally, and you win!
+        <br><br>
+        <b>How to assemble your board:</b> The text input below contains a default list of possible policy items. Feel free to edit this list however you like. If you press the "Shuffle list" button, the entire list will be randomly resorted. When you press the "Assign squares" button, the first 25 items in the list will be assigned to each square on the board according to the order in which they are listed. The squares will be assigned, going from left to right, and then top to bottom. When you're ready, take a screenshot of your Biden Bingo board and post it to the <a href="https://www.facebook.com/BidenBingoBoard" target="_blank">Facebook page</a> so you can declare victory if you are the first to get five squares in a row.
+      </p>
+      <textarea id="square-list"></textarea>
+      <div id="buttons">
+        <button id="shuffle-list">Shuffle List</button>
+        <button id="assign-squares">Assign Squares</button>
+      </div>
+    </div>
+    <script>
+      const defaultSquareList = [
+        'Assault weapon ban',
+        'Universal red flag laws',
+        'Universal background checks',
+        'DC statehood',
+        'Puerto Rican statehood',
+        'Expand the Supreme Court',
+        'Decriminalize marijuana',
+        '$1400+ stimulus checks',
+        'Public option',
+        'End the filibuster',
+        'Some college debt relief',
+        'Raising of national minimum wage',
+        'Money in politics reform',
+        'Supreme court reform',
+        'Policing reform',
+        'Green new deal',
+        'State coronavirus aid money',
+        'Remove the filibuster',
+        'Supreme court justice appointment',
+        'Abolish the electoral college',
+        'Immigration reform',
+        'End Cuba embargo',
+        'Enter new Iran nuclear deal',
+        'Trade deal to counter China',
+        'Re-enter Paris Climate Accord',
+        'Federal mask mandate',
+        'Federal minimum wage increase',
+        'Path to citizenship for DACA recipients',
+        'Mandatory no-fee, no-penalty back accounts',
+        'Universal, high-speed broadband',
+      ];
+      const squareListInput = document.getElementById('square-list');
+      const bingoBoard = document.getElementById('bingo-board');
+      squareListInput.value = defaultSquareList.join('\n');
+
+      function shuffleList() {
+        const squareList = squareListInput.value.split('\n');
+
+        const newSquareList = [];
+
+        const listLength = squareList.length;
+
+        for (let i = 0; i < listLength; i++) {
+          const index = Math.floor(Math.random() * squareList.length);
+          newSquareList.push(squareList[index]);
+          squareList.splice(index, 1);
+        }
+
+        squareListInput.value = newSquareList.join('\n');
+      }
+
+      const shuffleListButton = document.getElementById('shuffle-list');
+
+      shuffleListButton.addEventListener('click', shuffleList);
+
+      function assignSquares() {
+        const squareList = squareListInput.value.split('\n');
+
+        bingoBoard.innerHTML = '';
+
+        const headerRow = document.createElement('tr');
+
+        headerRow.innerHTML = `
+          <thead>
+            <th><img src='biden-B.png' /></th>
+            <th><img src='biden-I.png' /></th>
+            <th><img src='biden-D.png' /></th>
+            <th><img src='biden-E.png' /></th>
+            <th><img src='biden-N.png' /></th>
+          </thead>
+        `;
+
+        const boardBody = document.createElement('tbody');
+        bingoBoard.append(headerRow);
+        bingoBoard.append(boardBody)
+
+        for (let y = 0; y < 5; y++) {
+          const row = document.createElement('tr');
+          for (let x = 0; x < 5; x++) {
+            const cell = document.createElement('td');
+            cell.innerText = squareList[x + y * 5];
+            row.append(cell);
+          }
+          boardBody.append(row);
+        }
+      }
+
+      const assignSquaresButton = document.getElementById('assign-squares');
+
+      assignSquaresButton.addEventListener('click', assignSquares);
+
+      shuffleList();
+      assignSquares();
+    </script>
+  </body>
+</html>
